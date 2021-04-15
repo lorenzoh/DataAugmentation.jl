@@ -26,6 +26,33 @@ end
         tfm = NormalizeIntensity()
         @test itemdata(apply(tfm, item)) ≈ ground_truth
     end
+
+    @testset ExtendedTestSet "NormalizeIntensity" begin
+    item = Image(Float32.(collect(1:5)))
+    ground_truth = [-1.2649, -0.6325, 0, 0.6325, 1.2649]
+    tfm = NormalizeIntensity()
+    @test itemdata(apply(tfm, item)) ≈ ground_truth
+    end
+end
+
+@testset ExtendedTestSet "AddChannel" begin
+    @testset ExtendedTestSet "AddChannel" begin
+    item = Image(rand(Float32, 20, 20, 20, 2))
+    tfm = AddChannel()
+    @test size(itemdata(apply(tfm, item))) == (20, 20, 20, 2, 1)
+    end
+
+    @testset ExtendedTestSet "AddChannel" begin
+    item = Image(rand(Float32, 20, 2))
+    tfm = AddChannel()
+    @test size(itemdata(apply(tfm, item))) == (20, 2, 1)
+    end
+
+    @testset ExtendedTestSet "AddChannel" begin
+    item = MaskBinary(rand(Bool, 20, 2))
+    tfm = AddChannel()
+    @test size(itemdata(apply(tfm, item))) == (20, 2, 1)
+    end
 end
 
 @testset ExtendedTestSet "ToEltype" begin
